@@ -74,12 +74,12 @@ export default function RestaurantListings({ initialRestaurants, searchParams })
 	}, [filters])
 
 	useEffect(() => {
-		// const unsubscribe = getRestaurantsSnapshot(data => {
-		// 	setRestaurants(data);
-		// }, filters);
-		// return () => {
-		// 	unsubscribe();
-		// };
+		const unsubscribe = getRestaurantsSnapshot((data) => {
+			setRestaurants(data)
+		}, filters)
+		return () => {
+			unsubscribe()
+		}
 	}, [filters])
 
 	return (
