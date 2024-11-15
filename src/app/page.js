@@ -11,15 +11,15 @@ export const dynamic = "force-dynamic"
 // This line also forces this route to be server-side rendered
 // export const revalidate = 0;
 
-export default async function Home({ searchParams }) {
+export default async function Home(c) {
 	// Using seachParams which Next.js provides, allows the filtering to happen on the server-side, for example:
 	// ?city=London&category=Indian&sort=Review
+	console.log("searchParams", c)
 	const { firebaseServerApp } = await getAuthenticatedAppForUser()
-	const restaurants = await getRestaurants(getFirestore(firebaseServerApp), searchParams)
-	console.log("restaurants", restaurants)
+	const restaurants = await getRestaurants(getFirestore(firebaseServerApp), c.searchParams)
 	return (
 		<main className='main__home'>
-			<RestaurantListings initialRestaurants={restaurants} searchParams={searchParams} />
+			<RestaurantListings initialRestaurants={restaurants} searchParams={c.searchParams} />
 		</main>
 	)
 }

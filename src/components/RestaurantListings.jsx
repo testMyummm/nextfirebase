@@ -104,5 +104,7 @@ function routerWithFilters(router, filters) {
 	}
 
 	const queryString = queryParams.toString()
-	router.push(`?${queryString}`)
+	console.log("queryString", queryString)
+
+	// router.push(`?${queryString}`)
 }

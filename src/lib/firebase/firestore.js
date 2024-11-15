@@ -126,7 +126,27 @@ export async function getRestaurantById(db, restaurantId) {
 }
 
 export function getRestaurantSnapshotById(restaurantId, cb) {
-	return
+	console.log("getRestaurantSnapshotById", restaurantId)
+	if (!restaurantId) {
+		console.log("Error: Invalid restaurantId received: ", restaurantId)
+		return
+	}
+
+	const docRef = doc(db, "restaurants", restaurantId)
+	const unsubscribe = function () {
+		console.log("Unsubscribing")
+		getDoc(docRef).then((docSnap) => {
+			console.log("Document data:", docSnap.data())
+			const results = {
+				id: docSnap.id,
+				...docSnap.data(),
+				// Only plain objects can be passed to Client Components from Server Components
+				timestamp: docSnap.data().timestamp.toDate(),
+			}
+			cb(results)
+		})
+	}
+	return unsubscribe
 }
 
 export async function getReviewsByRestaurantId(db, restaurantId) {
