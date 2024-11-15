@@ -6,6 +6,7 @@ import { getInstallations, getToken } from "firebase/installations"
 let firebaseConfig
 
 self.addEventListener("install", (event) => {
+	console.log("Service worker install")
 	// extract firebase config from query string
 	const serializedFirebaseConfig = new URL(location).searchParams.get("firebaseConfig")
 
@@ -18,12 +19,16 @@ self.addEventListener("install", (event) => {
 })
 
 self.addEventListener("fetch", (event) => {
+	console.log("Service worker fetch")
+	console.log("fetch (root)", event.request.url)
 	const { origin } = new URL(event.request.url)
 	if (origin !== self.location.origin) return
 	event.respondWith(fetchWithFirebaseHeaders(event.request))
 })
 
 async function fetchWithFirebaseHeaders(request) {
+	console.log("Service worker fetchWithFirebaseHeaders")
+	console.log("fetchWithFirebaseHeaders (root)", request.url)
 	const app = initializeApp(firebaseConfig)
 	const auth = getAuth(app)
 	const installations = getInstallations(app)
@@ -36,6 +41,7 @@ async function fetchWithFirebaseHeaders(request) {
 }
 
 async function getAuthIdToken(auth) {
+	console.log("Service worker getAuthIdToken")
 	await auth.authStateReady()
 	if (!auth.currentUser) return
 	return await getIdToken(auth.currentUser)

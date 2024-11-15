@@ -15,9 +15,9 @@ function useUserSession(initialUser) {
 	// The service worker is built with npm run build-service-worker
 	useEffect(() => {
 		if ("serviceWorker" in navigator) {
+			console.log("SERVICE WORKER")
 			const serializedFirebaseConfig = encodeURIComponent(JSON.stringify(firebaseConfig))
 			const serviceWorkerUrl = `/auth-service-worker.js?firebaseConfig=${serializedFirebaseConfig}`
-
 			navigator.serviceWorker.register(serviceWorkerUrl).then((registration) => console.log("scope is: ", registration.scope))
 		}
 	}, [])
